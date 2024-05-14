@@ -142,8 +142,11 @@ function uninstall_node() {
 
 # 创建钱包
 function add_wallet() {
-    read -p "请输入你想设置的钱包名称: " wallet_name
-    0gchaind keys add $wallet_name --eth
+	read -p "请输入钱包名称: " wallet_name
+    evmosd keys add "$wallet_name"
+    echo 'export WALLET_NAME="$wallet_name"' >> ~/.bash_profile
+    echo "EVM钱包地址，用于领水："
+    echo "0x$(evmosd debug addr $(evmosd keys show $wallet_name -a) | grep hex | awk '{print $3}')"
 }
 
 # 导入钱包
